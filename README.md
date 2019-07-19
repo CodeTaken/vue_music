@@ -1,10 +1,15 @@
 # vue_music
 
 > A Vue.js project
-
 ## Build Setup
 
 ``` bash
+
+# 是一个基于 vue 开发的音乐App。
+
+
+
+
 # install dependencies
 npm install
 
@@ -28,3 +33,6 @@ npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+
