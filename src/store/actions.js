@@ -16,6 +16,7 @@ export default {
     const result =await getSinger();
     if(result.code ===0){
       const singers = result.singerList.data.singerlist
+      //console.log(singers);
       commit(RECEIVE_SINGER,singers)
     }
   }

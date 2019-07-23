@@ -5,6 +5,10 @@
 ## Build Setup
 
 ``` bash
+// scroll 的渲染与DOM数据
+// singers 页面有时候不请求   后台返回空数据
+//  计算每个 数组的距离数组 实时获取数组 获取当前的数组，
+
 # install dependencies
 npm install
 

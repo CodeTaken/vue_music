@@ -1,6 +1,6 @@
 <template>
     <div :data="data">
-        <div class="flex mediaGroup" v-for="(media,index) in data">
+        <div class="flex mediaGroup" v-for="(media,index) in data" :key="index">
             <div class="flex contentLeft">
               <img class="img_auto" v-lazy="media.imgurl" alt="">
             </div>

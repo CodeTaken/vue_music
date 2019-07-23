@@ -5,7 +5,7 @@
         <!--轮播-->
         <div class="swiperWarp">
           <mt-swipe :auto="4000">
-            <mt-swipe-item v-for="(banner,index) in banners">
+            <mt-swipe-item v-for="(banner,index) in banners" :key="index">
               <a :href="banner.linkUrl" :id="banner.id" class="link"><img class="img_auto" :src="banner.picUrl" alt=""></a>
             </mt-swipe-item>
           </mt-swipe>

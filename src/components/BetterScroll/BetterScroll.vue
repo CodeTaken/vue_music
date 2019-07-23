@@ -1,5 +1,5 @@
 <template>
-    <div ref="wrapper" class="wrapper">
+    <div ref="wrapper" class="wrapper" :data="data" :probeType="probeType">
       <div class="content">
         <slot></slot>
       </div>
@@ -28,11 +28,19 @@
       data(){
           return{}
       },
+      watch:{
+        data(value){
+          this.$nextTick(()=>{
+            this.refresh()
+          })
+        }
+      },
       mounted(){
         // 所有数据渲染完成之后 new BScroll('.wrapper'
-        setTimeout(()=>{
-          this._initBscroll()
-        },2000)
+        this._initBscroll()
+      },
+      computed:{
+
       },
       methods:{
         _initBscroll(){
@@ -40,8 +48,25 @@
             probeType: this.probeType,
             click: this.click
           })
-        }
-      }
+          // 监听 滚动的
+          if(this.BSscroll){
+            let that = this;
+            this.BSscroll.on('scroll',(e)=>{
+              that.$emit('scrollStart',e)
+            })
+            this.BSscroll.on('scrollEnd', ({x, y}) => {
+              this.scrollY = Math.abs(y)
+              //console.log('scrollEnd',this.scrollY)
+              that.$emit('scrollEnd',this.scrollY)
+            })
+          }
+        },
+        refresh() {
+          this.BSscroll && this.BSscroll.refresh()
+        },
+      },
+
+
     }
 </script>
 

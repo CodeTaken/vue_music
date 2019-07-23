@@ -1,6 +1,6 @@
 <template>
     <div class="flex Tab">
-        <div class="tab-item" v-for="(tab,index) in tabs">
+        <div class="tab-item" v-for="(tab,index) in tabs" :key="index">
           <router-link tag="div" class="tabName" :to="tab.path">{{tab.name}}</router-link>
         </div>
     </div>
