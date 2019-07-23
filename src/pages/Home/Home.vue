@@ -1,6 +1,7 @@
 <template>
     <div class="HomePage">
-      <BetterScroll :data="recommend">
+      <!--:data="recommend"  BetterScroll-->
+      <BetterScroll :data="recommend" class="bscroll" style="overflow: hidden">
         <!--轮播-->
         <div class="swiperWarp">
           <mt-swipe :auto="4000">
@@ -14,6 +15,7 @@
           <div class="hotRecommend-title">热门歌单推荐</div>
           <div class="hotRecommend-content">
             <Media :data="recommend" />
+            <LoadMore v-if="!recommend.length" />
           </div>
         </div>
       </BetterScroll>
@@ -23,12 +25,14 @@
 <script>
   import Media from '../../components/Media/Media'
   import BetterScroll  from '../../components/BetterScroll/BetterScroll'
+  import LoadMore from '../../components/LoadMore/LoadMore.vue'
   import {getBanner,getDiscues}from '../../api/index'
     export default {
       name: "Home",
       components:{
         Media,
-        BetterScroll
+        BetterScroll,
+        LoadMore
       },
       data(){
         return {
@@ -43,9 +47,6 @@
           this._getRecommends();
       },
       watch:{
-        // swipers(){
-        //   console.log(this.swipers);
-        // }
       },
       methods:{
         _getBanner(){
@@ -56,29 +57,37 @@
         },
         async _getRecommends(){
           const result = await getDiscues()
-          console.log(result);
+          //console.log(result);
           if(result.code ===0){
-              this.recommend = result.data.list
+              setTimeout(()=>{
+                this.recommend = result.data.list
+              },1000)
+
           }
         }
       }
     }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../assets/stylus/variable.styl"
-.swiperWarp
-  height:150px
-  .mint-swipe-indicator
-    opacity .8
-  .swiperWarp .mint-swipe-indicator
-    opacity 1
-    .link
-      display: block
-.hotRecommend
-  padding:20px 0;
-  .hotRecommend-title
-    color:$color-theme
-    font-size:$font-size-medium
-    text-align center
+  .HomePage
+    height:100%
+    .bscroll
+      height:calc(100% - 80px)
+      overflow: hidden
+      .swiperWarp
+        height:150px
+        .mint-swipe-indicator
+          opacity .8
+        .swiperWarp .mint-swipe-indicator
+          opacity 1
+          .link
+            display: block
+      .hotRecommend
+        padding:20px 0;
+        .hotRecommend-title
+          color:$color-theme
+          font-size:$font-size-medium
+          text-align center
 </style>

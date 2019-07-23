@@ -3,8 +3,23 @@
 </template>
 
 <script>
+  import { getSinger } from '../../api/index'
+  import {mapState} from 'vuex'
     export default {
-        name: "Singer"
+      name: "Singer",
+      data (){
+        return {
+
+        }
+      },
+      created(){
+        this._getSinger();
+      },
+      methods:{
+           _getSinger(){
+               this.$store.dispatch('getSingers')
+          }
+      }
     }
 </script>
 

@@ -1,6 +1,9 @@
 <template>
-    <div ref="" class="wrapper">
-      <slot></slot>
+    <div ref="wrapper" class="wrapper">
+      <div class="content">
+        <slot></slot>
+      </div>
+
     </div>
 </template>
 
@@ -33,8 +36,7 @@
       },
       methods:{
         _initBscroll(){
-          console.log('jll');
-          this.BSscroll = new BScroll('.wrapper',{
+          this.BSscroll = new BScroll(this.$refs.wrapper,{
             probeType: this.probeType,
             click: this.click
           })

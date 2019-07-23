@@ -1,7 +1,7 @@
 <template>
     <div class="flex Tab">
         <div class="tab-item" v-for="(tab,index) in tabs">
-          <router-link tag="div" :to="tab.path">{{tab.name}}</router-link>
+          <router-link tag="div" class="tabName" :to="tab.path">{{tab.name}}</router-link>
         </div>
     </div>
 </template>
@@ -41,11 +41,14 @@
     .tab-item
         flex 1;
         text-align center
+        .tabName
+          padding-bottom: 4px
+          border-bottom:2px solid transparents
         .router-link-active{
           display inline-block;
           vertical-align middle
           color:$color-theme
           padding-bottom 4px
-          border-bottom: 1px solid $color-theme
+          border-bottom: 2px solid $color-theme
         }
 </style>
