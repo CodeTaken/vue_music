@@ -3,4 +3,5 @@
  */
 export default {
   singers:[],    //歌手名单
+  singerDetail:{},   // 歌手详情
 }

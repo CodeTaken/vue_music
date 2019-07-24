@@ -51,6 +51,7 @@ export function getSinger(){
 export function getSingerDetail(singerId){
   const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
   let jsonData = {"comm":{"ct":24,"cv":0},"singer":{"method":"get_singer_detail_info","param":{"sort":5,"singermid":singerId,"sin":0,"num":100},"module":"music.web_singer_info_svr"}}
+  //console.log(jsonData);
   let data = Object.assign({},commonParam,{
     //'-':'getUCGI7841720130500427',
     g_tk: 387183959,
@@ -63,6 +64,7 @@ export function getSingerDetail(singerId){
     needNewCode: 0,
     data:JSON.stringify(jsonData)
   })
+
   return jsonp(url,data)
 }
 

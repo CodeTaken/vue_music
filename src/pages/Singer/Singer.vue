@@ -23,7 +23,7 @@
   const TITLE_HEIGHT=32;
   import BetterScroll from '../../components/BetterScroll/BetterScroll'
   import {mapState} from 'vuex'
-  import { getSingerDetail } from  '../../api/index'
+  // import { getSingerDetail } from  '../../api/index'
     export default {
       name: "Singer",
       components:{
@@ -57,7 +57,7 @@
       },
       created(){
         this.$store.dispatch('getSingers')
-        this._getSingerDetail();
+        // this._getSingerDetail();
       },
       mounted(){
       },
@@ -69,12 +69,12 @@
         }
       },
       methods:{
-          _getSingerDetail(){
-              let id = '001fNHEf1SFEFN'
-              getSingerDetail(id).then((res)=>{
-                console.log(res);
-              })
-          },
+          // _getSingerDetail(){
+          //     let id = '001fNHEf1SFEFN'
+          //     getSingerDetail(id).then((res)=>{
+          //       console.log(res);
+          //     })
+          // },
         _scrollStart(e){
           let {Height} = this
           let scrollY = Math.abs(e.y)

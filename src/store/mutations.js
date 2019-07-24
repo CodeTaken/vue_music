@@ -3,6 +3,7 @@
  */
 import {
   RECEIVE_SINGER,
+  RECEIVE_SINGERDETAIL
 } from './mutations-types'
 
 export default {
@@ -38,6 +39,10 @@ export default {
     })
     //console.log(Data);
     state.singers = Data
-  }
+  },
 
+  // 歌手详情
+  [RECEIVE_SINGERDETAIL](state,singerDetail){
+    console.log(singerDetail);
+  }
 }
