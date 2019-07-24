@@ -3,11 +3,20 @@
 > vue project
 
 ## Build Setup
+需要完善的
+  1、歌手页右侧的联动
+  2、bug singer 页面需要延迟计算高度，不然算的高度不对
+  3、歌手页滑动顶部时固定顶部要消失
+
+
+
+注意的点：
+// scroll 的渲染与DOM数据
+// singers 页面有时候不请求 原因=>后台返回空数据
+// 计算每个 数组的距离数组 实时获取数组 获取当前的数组，
+
 
 ``` bash
-// scroll 的渲染与DOM数据
-// singers 页面有时候不请求   后台返回空数据
-//  计算每个 数组的距离数组 实时获取数组 获取当前的数组，
 
 # install dependencies
 npm install

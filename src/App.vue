@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Header />
-    <Tab />
+    <Header v-if="this.$route.meta.headerStatus" />
+    <Tab v-if="this.$route.meta.tabStatus" />
     <router-view/>
   </div>
 </template>
@@ -14,6 +14,9 @@ export default {
   components:{
     Header,
     Tab
+  },
+  mounted(){
+
   }
 }
 </script>

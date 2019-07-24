@@ -2,22 +2,25 @@
     <div class="HomePage">
       <!--:data="recommend"  BetterScroll-->
       <BetterScroll :data="recommend" class="bscroll" style="overflow: hidden">
-        <!--轮播-->
-        <div class="swiperWarp">
-          <mt-swipe :auto="4000">
-            <mt-swipe-item v-for="(banner,index) in banners" :key="index">
-              <a :href="banner.linkUrl" :id="banner.id" class="link"><img class="img_auto" :src="banner.picUrl" alt=""></a>
-            </mt-swipe-item>
-          </mt-swipe>
+        <div>
+            <!--轮播-->
+            <div class="swiperWarp">
+              <mt-swipe :auto="4000">
+                <mt-swipe-item v-for="(banner,index) in banners" :key="index">
+                  <a :href="banner.linkUrl" :id="banner.id" class="link"><img class="img_auto" :src="banner.picUrl" alt=""></a>
+                </mt-swipe-item>
+              </mt-swipe>
+            </div>
+            <!--推荐歌单表-->
+            <div class="hotRecommend">
+              <div class="hotRecommend-title">热门歌单推荐</div>
+              <div class="hotRecommend-content">
+                <Media :data="recommend" />
+                <LoadMore v-if="!recommend.length" />
+              </div>
+            </div>
         </div>
-        <!--推荐歌单表-->
-        <div class="hotRecommend">
-          <div class="hotRecommend-title">热门歌单推荐</div>
-          <div class="hotRecommend-content">
-            <Media :data="recommend" />
-            <LoadMore v-if="!recommend.length" />
-          </div>
-        </div>
+
       </BetterScroll>
     </div>
 </template>
@@ -72,9 +75,13 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../assets/stylus/variable.styl"
   .HomePage
-    height:100%
+    /*height:100%*/
+    position: fixed;
+    top: 82px;
+    width:100%
+    bottom: 0;
     .bscroll
-      height:calc(100% - 80px)
+      height:100%
       overflow: hidden
       .swiperWarp
         height:150px

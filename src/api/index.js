@@ -47,3 +47,22 @@ export function getSinger(){
   return jsonp(url, {})
 }
 
+// 抓取歌手详情接口
+export function getSingerDetail(singerId){
+  const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+  let jsonData = {"comm":{"ct":24,"cv":0},"singer":{"method":"get_singer_detail_info","param":{"sort":5,"singermid":singerId,"sin":0,"num":100},"module":"music.web_singer_info_svr"}}
+  let data = Object.assign({},commonParam,{
+    //'-':'getUCGI7841720130500427',
+    g_tk: 387183959,
+    loginUin: 930407440,
+    hostUin: 0,
+    notice: 0,
+    inCharset: 'utf-8',
+    outCharset: 'utf-8',
+    platform: 'yqq.json',
+    needNewCode: 0,
+    data:JSON.stringify(jsonData)
+  })
+  return jsonp(url,data)
+}
+

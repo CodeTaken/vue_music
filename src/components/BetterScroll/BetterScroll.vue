@@ -1,9 +1,6 @@
 <template>
     <div ref="wrapper" class="wrapper" :data="data" :probeType="probeType">
-      <div class="content">
         <slot></slot>
-      </div>
-
     </div>
 </template>
 
