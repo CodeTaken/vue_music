@@ -3,7 +3,13 @@
  */
 import {
   RECEIVE_SINGER,
-  RECEIVE_SINGERDETAIL
+  RECEIVE_SINGERDETAIL,
+  PLAYSHOW,
+  PLAYSTATUS,
+  ORDERSONGSLIST,
+  RANDOMSONGSLIST,
+  PLAYMODE,
+  CURRENTPLAYINDEX
 } from './mutations-types'
 
 export default {
@@ -44,5 +50,30 @@ export default {
   // 歌手详情
   [RECEIVE_SINGERDETAIL](state,singerDetail){
     console.log(singerDetail);
-  }
+  },
+
+  // 播放器的显示
+  [PLAYSHOW](state,status){
+    state.playShow = status
+  },
+  // 播放器的状态
+  [PLAYSTATUS](state,status){
+    state.playStatus = status
+  },
+  // 顺序播放歌单
+  [ORDERSONGSLIST](state,lists){
+    state.orderSongsList = lists
+  },
+  // 随机播放歌单
+  [RANDOMSONGSLIST](state,lists){
+    state.randomSongsList = lists
+  },
+  // 播放模式
+  [PLAYMODE](state,mode){
+    state.playMode = mode
+  },
+  // 播放当前id
+  [CURRENTPLAYINDEX](state,index){
+    state.currentPlayIndex = index
+  },
 }

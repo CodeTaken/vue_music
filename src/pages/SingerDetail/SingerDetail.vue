@@ -17,7 +17,7 @@
       <div class="bg-layer" ref="layer"></div>
       <BetterScroll class="bscroll" ref="bscroll" :probeType="3" @scrollStart="_scrollStart">
         <div class="content">
-            <div v-for="(song,index) in songs" :key="index">
+            <div v-for="(song,index) in songs" :key="index" @click="playAudio(songs,index)">
                <SongList :song="song" />
             </div>
         </div>
@@ -30,7 +30,7 @@
   import SongList from '../../components/SongList/SongList'
   import {getSingerDetail} from '../../api/index'
   import {createSong} from '../../assets/js/song'
-
+  import {mapActions} from 'vuex'
   const FIXSCROLL =40;
   var originHeight=0
     export default {
@@ -105,7 +105,7 @@
         title(){
           const {songs} = this
           if(songs.length>0){
-              console.log(songs[0])
+              //console.log(songs[0])
               return songs[0].singer
           }else{
               return ''
@@ -114,11 +114,19 @@
         },
       },
       methods:{
+        ...mapActions(['openPlaying']),
+        playAudio(item,index){
+          // 获取到歌曲列表及当前idx
+          this.openPlaying({
+            lists:item,
+            index:index
+          })
+        },
         _scrollStart(e){
           this.scrollY = e.y
         },
         _random(){
-            console.log('random');
+            //console.log('random');
         },
         _getSingerDetail(){
           const id= this.$route.query.id
