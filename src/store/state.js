@@ -6,7 +6,7 @@ export default {
   singerDetail:{},         // 歌手详情
   playShow:false,         // 播放器是否显示
   playStatus:false,       // 播放器的状态
-
+  playingList:[],          // 播放列表
   orderSongsList:[],       // 顺序播放器列表
   randomSongsList:[],      // 随机播放器列表
   playMode:0,              // 0表示顺序播放 1表示随机 2表示单曲循环

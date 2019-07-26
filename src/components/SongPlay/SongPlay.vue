@@ -1,68 +1,77 @@
 <template>
     <div class="page">
-        <div class="play" v-show="!playStatus">
-            <div class="back" @click="back">
-              <i class="icon-back"></i>
-            </div>
-            <div class="title">
-              <h3 class="songName">来自天堂的魔鬼</h3>
-              <p class="name">G.E.M. 邓紫棋</p>
-            </div>
-            <div class="songImg">
-                <div class="songImgContent"><img class="img_auto" src="https://y.gtimg.cn/music/photo_new/T002R300x300M000003y8dsH2wBHlo.jpg?max_age=2592000" alt=""></div>
-            </div>
-            <div class="song"></div>
-            <div class="flex operators">
-              <div class="icon i-left">
-                <i class="icon-sequence"></i>
+        <transition name="miniPlay">
+          <div class="play OpaTran" v-show="!playStatus">
+              <div class="back" @click="back">
+                <i class="icon-back"></i>
               </div>
-              <div class="icon i-left">
-                <i class="icon-prev"></i>
+              <div class="title">
+                <h3 class="songName">{{currentSong.name}}</h3>
+                <p class="name">{{currentSong.singer}}</p>
               </div>
-              <div class="icon i-center">
-                <i class="icon-pause"></i>
+              <div class="songImg">
+                  <div class="songImgContent"><img class="img_auto" :src="currentSong.image" alt=""></div>
               </div>
-              <div class="icon i-right">
-                <i class="icon-next"></i>
+              <div class="song"></div>
+              <div class="flex operators">
+                <div class="icon i-left">
+                  <i class="icon-sequence"></i>
+                </div>
+                <div class="icon i-left" @click="_changePlayuMusic('prev')">
+                  <i class="icon-prev"></i>
+                </div>
+                <div class="icon i-center">
+                  <i class="icon-pause"></i>
+                </div>
+                <div class="icon i-right" @click="_changePlayuMusic('next')">
+                  <i class="icon-next"></i>
+                </div>
+                <div class="icon i-right">
+                  <i class="icon-not-favorite"></i>
+                </div>
               </div>
-              <div class="icon i-right">
-                <i class="icon-not-favorite"></i>
-              </div>
-            </div>
-        </div>
-        <div class="flex minPlay" v-show="playStatus">
-            <div class="minImgContent" @click="back"><img class="img_auto" src="https://y.gtimg.cn/music/photo_new/T002R300x300M000003y8dsH2wBHlo.jpg?max_age=2592000" alt=""></div>
+          </div>
+        </transition>
+        <transition name="miniPlay">
+          <div class="flex minPlay OpaTran" v-show="playStatus">
+            <div class="minImgContent" @click="back"><img class="img_auto" :src="currentSong.image" alt=""></div>
             <div class="flex minTitle" @click="back">
-              <h3 class="songName">来自天堂的魔鬼</h3>
-              <p class="name">G.E.M. 邓紫棋</p>
+              <h3 class="songName">{{currentSong.name}}</h3>
+              <p class="name">{{currentSong.singer}}</p>
             </div>
-          <div class="control">
+            <div class="control">
               <i class="icon-mini icon-pause-mini"></i>
+            </div>
+            <div class="control">
+              <i class="icon-playlist"></i>
+            </div>
           </div>
-          <div class="control">
-            <i class="icon-playlist"></i>
-          </div>
-        </div>
+        </transition>
+
     </div>
 </template>
 
 <script>
-    import {mapGetters,mapMutations} from 'vuex'
+    import {mapGetters,mapMutations,mapActions} from 'vuex'
     export default {
       name: "SongPlay",
       computed:{
-        ...mapGetters(['playStatus','currentSong','randomSongsList','currentPlayIndex'])
+        ...mapGetters(['playStatus','currentSong','randomSongsList','currentPlayIndex']),
       },
       watch:{},
       created(){},
-      mounted(){},
+      mounted(){
+          console.log(this.currentSong)
+      },
       methods:{
         back(){
           // 改变播放的状态 小播发器 还是全屏
           const status =!this.playStatus
           this._setPalyFull(status)
         },
-
+        _changePlayuMusic(type){
+          this.$store.dispatch('changePlayMusic',type)
+        },
         ...mapMutations({
           _setPalyFull:'playStatus'
         }),
@@ -73,6 +82,7 @@
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../assets/stylus/variable.styl"
+  @import "../../assets/stylus/transition.styl";
 .play
   position fixed
   top:0
@@ -155,4 +165,9 @@
     font-size:30px;
     color:$color-theme
     margin-left:20px
+
+
+
+
+
 </style>

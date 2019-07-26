@@ -139,6 +139,7 @@
         },
         _normalData(songLists){
           let singer =[]
+          console.log(songLists);
           songLists.forEach((songList,i)=>{
 
             if(songList.mid && songList.album.id){

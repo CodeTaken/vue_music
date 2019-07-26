@@ -10,13 +10,19 @@
   4、歌手详情页 vuex 请求能成功，返回数据为空
 
 
+暂停 icon-pause icon-pause-mini
 
 注意的点：
 // scroll 的渲染与DOM数据
 // singers 页面有时候不请求 原因=>后台返回空数据
 // 计算每个 数组的距离数组 实时获取数组 获取当前的数组，
 // JS 执行动画是怎么兼容处理
-
+// vue 动画的实现
+播放页背景的设置
+mapState mapGetters
+mapActions mapMutations  methods
+时间戳转化为时分秒
+圆形进度条的制作
 
 ``` bash
 

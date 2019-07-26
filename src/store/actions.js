@@ -7,7 +7,9 @@ import {
   RECEIVE_SINGERDETAIL,
   PLAYSHOW,
   PLAYSTATUS,
+  PLAYINGLISTS,
   ORDERSONGSLIST,
+  RANDOMSONGSLIST,
   CURRENTPLAYINDEX,
 } from './mutations-types'
 
@@ -37,12 +39,19 @@ export default {
     }
   },
   // 开启播放模式
-  openPlaying({commit},{lists,index}){
+  openPlaying({commit,state},{lists,index}){
     // 更新播放列表  更新currentIndex 更新播放状态  播放器显示
     commit(PLAYSHOW,true)
     //commit(PLAYSTATUS,true)
     commit(ORDERSONGSLIST,lists)
+    //state.playMode===0?commit(ORDERSONGSLIST,lists):(state.playMode===1?commit(RANDOMSONGSLIST,lists):commit(RANDOMSONGSLIST,lists))
     commit(CURRENTPLAYINDEX,index)
   },
-
+  // 切换上一首、下一首
+  changePlayMusic({commit,state},type){
+    let index = state.currentPlayIndex
+    index = state.playMode ===2?0:(type=='next'?(index < state.playingList.length?index+1:0):(index <= 0?state.playingList.length:index-1))
+    console.log(index);
+    commit(CURRENTPLAYINDEX,index)
+  },
 }
