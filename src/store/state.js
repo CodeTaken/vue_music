@@ -5,6 +5,7 @@ export default {
   singers:[],              //歌手名单
   singerDetail:{},         // 歌手详情
   playShow:false,         // 播放器是否显示
+  playFullShow:true,       // 播放器的状态
   playStatus:false,       // 播放器的状态
   playingList:[],          // 播放列表
   orderSongsList:[],       // 顺序播放器列表

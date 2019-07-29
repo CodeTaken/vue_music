@@ -68,3 +68,24 @@ export function getSingerDetail(singerId){
   return jsonp(url,data)
 }
 
+//抓取歌曲url
+export function getSongUrl(songId){
+  const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+  let jsonData = {"req":{"module":"CDN.SrfCdnDispatchServer","method":"GetCdnDispatch","param":{"guid":"6170070579","calltype":0,"userip":""}},"req_0":{"module":"vkey.GetVkeyServer","method":"CgiGetVkey","param":{"guid":"6170070579","songmid":[songId],"songtype":[0],"uin":"930407440","loginflag":1,"platform":"20"}},"comm":{"uin":930407440,"format":"json","ct":24,"cv":0}}
+  //console.log(jsonData);
+  let data = Object.assign({},commonParam,{
+    //'-':'getUCGI7841720130500427',
+    g_tk: 1876302321,
+    loginUin: 930407440,
+    hostUin: 0,
+    notice: 0,
+    format: 'json',
+    inCharset: 'utf-8',
+    outCharset: 'utf-8',
+    platform: 'yqq.json',
+    needNewCode: 0,
+    data:JSON.stringify(jsonData)
+  })
+
+  return jsonp(url,data)
+}

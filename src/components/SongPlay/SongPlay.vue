@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <transition name="miniPlay">
-          <div class="play OpaTran" v-show="!playStatus">
+          <div class="play OpaTran" v-show="playFullShow">
               <div class="back" @click="back">
                 <i class="icon-back"></i>
               </div>
@@ -13,6 +13,14 @@
                   <div class="songImgContent"><img class="img_auto" :src="currentSong.image" alt=""></div>
               </div>
               <div class="song"></div>
+              <div class="progress">
+                <div class="flex progressContent">
+                  <span class="curTime time">{{_format(currentTime)}}</span>
+                  <div class="progressBar"><mt-range :value="percentage" v-model="rangeValue" @touchend="middleTouchEnd" :bar-height="4">
+                  </mt-range></div>
+                  <span class="totalTime time">{{_format(currentSong.duration)}}</span>
+                </div>
+              </div>
               <div class="flex operators">
                 <div class="icon i-left">
                   <i class="icon-sequence"></i>
@@ -20,8 +28,8 @@
                 <div class="icon i-left" @click="_changePlayuMusic('prev')">
                   <i class="icon-prev"></i>
                 </div>
-                <div class="icon i-center">
-                  <i class="icon-pause"></i>
+                <div class="icon i-center" @click="togglePlay">
+                  <i :class="playStatus?'icon-pause':'icon-play'"></i>
                 </div>
                 <div class="icon i-right" @click="_changePlayuMusic('next')">
                   <i class="icon-next"></i>
@@ -33,7 +41,7 @@
           </div>
         </transition>
         <transition name="miniPlay">
-          <div class="flex minPlay OpaTran" v-show="playStatus">
+          <div class="flex minPlay OpaTran" v-show="!playFullShow">
             <div class="minImgContent" @click="back"><img class="img_auto" :src="currentSong.image" alt=""></div>
             <div class="flex minTitle" @click="back">
               <h3 class="songName">{{currentSong.name}}</h3>
@@ -48,6 +56,7 @@
           </div>
         </transition>
 
+      <audio :src="currentSong.url" @timeupdate="_uploadTime" @canplay="_ready" @ended="_playEnd" ref="aduioEle"></audio>
     </div>
 </template>
 
@@ -55,26 +64,98 @@
     import {mapGetters,mapMutations,mapActions} from 'vuex'
     export default {
       name: "SongPlay",
-      computed:{
-        ...mapGetters(['playStatus','currentSong','randomSongsList','currentPlayIndex']),
+      data(){
+          return{
+            rangeValue:0,
+            currentTime:0,
+            isPlaying:false,
+            isReady:false,
+          }
       },
-      watch:{},
+      computed:{
+        ...mapGetters(['playStatus','currentSong','randomSongsList','currentPlayIndex','playFullShow']),
+        percentage(){
+          let {currentTime} = this
+          return (currentTime/this.currentSong.duration)*100
+        },
+      },
+      watch:{
+        currentSong(newSong,oldSong){
+         if(newSong.id){
+             // url 改变了
+           this.currentTime=0
+           this.$nextTick(()=>{
+             if(this.playStatus) {
+               this.$refs.aduioEle.play()
+             }
+           })
+         }
+        },
+        rangeValue(e){
+         // console.log(e);
+//          let seek = (e*this.currentSong.duration)/100
+//          console.log(seek);
+//          this.$refs.aduioEle.seekable.start(seek)
+        }
+      },
       created(){},
       mounted(){
-          console.log(this.currentSong)
+        console.log(this.currentSong);
+//        this.$nextTick(()=>{
+//          if(this.$refs.aduioEle){
+//
+//          }
+//        })
+        this.$refs.aduioEle.seeking(100)
       },
       methods:{
+        togglePlay(){
+          let {isPlaying} = this
+          this.isPlaying = !isPlaying
+          this._changePalyStatus(this.isPlaying)
+          if(!isPlaying){
+            this.$refs.aduioEle.play()
+          }else{
+            this.$refs.aduioEle.pause()
+          }
+        },
         back(){
           // 改变播放的状态 小播发器 还是全屏
           const status =!this.playStatus
           this._setPalyFull(status)
         },
         _changePlayuMusic(type){
+          console.log(this.isReady);
           this.$store.dispatch('changePlayMusic',type)
         },
         ...mapMutations({
-          _setPalyFull:'playStatus'
+          _setPalyFull:'playFullShow',
+          _changePalyStatus:'playStatus'
         }),
+        _format(value){
+          let s = parseInt(value/60)
+          let m = parseInt(value%60)
+          if(m<10) m = '0'+m
+          return  `${s}:${m}`
+        },
+        _uploadTime(e){
+          this.currentTime = e.target.currentTime
+        },
+        _ready(e){
+         //this.togglePlay()
+          this.isReady = true
+         // 判断此时应该需要播放的状态，来进行播放
+        },
+        _playEnd(){
+            // 播放结束之后应该切换到下一首
+          this.isPlaying = false
+          this.isReady = false
+          this.$store.dispatch('changePlayMusic',type)
+        },
+        middleTouchEnd(){
+            console.log('jkjkjk');
+            console.log(this.rangeValue);
+        }
       },
 
     }
@@ -126,6 +207,17 @@
         border-radius 50%
         overflow: hidden;
         border:10px solid $color-dialog-background
+  .progress
+    position fixed
+    bottom:120px
+    width:100%
+    .time
+      font-size:$font-size-medium
+      color:$color-dialog-background
+    .progressBar
+      width:60%
+      margin:0 14px
+
   .operators
     position fixed
     bottom:60px
@@ -167,7 +259,18 @@
     margin-left:20px
 
 
-
-
-
+/deep/  .mt-range-content
+  margin-right:0
+/deep/ .mt-range-runway
+  border-top-color:$color-highlight-background
+  right: 0
+/deep/ .mt-range-progress
+  background:$color-theme
+/deep/ .mt-range-thumb
+  width:9px;
+  height:9px;
+  background:$color-theme-d
+  border:1px solid #fff
+  top: 50%;
+  transform: translateY(-50%);
 </style>

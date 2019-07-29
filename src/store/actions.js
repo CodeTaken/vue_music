@@ -15,7 +15,8 @@ import {
 
 import {
   getSinger,
-  getSingerDetail
+  getSingerDetail,
+  getSongUrl,
 } from '../api/index'
 
 export default {
@@ -41,6 +42,7 @@ export default {
   // 开启播放模式
   openPlaying({commit,state},{lists,index}){
     // 更新播放列表  更新currentIndex 更新播放状态  播放器显示
+    let songid = lists[index].mid
     commit(PLAYSHOW,true)
     //commit(PLAYSTATUS,true)
     commit(ORDERSONGSLIST,lists)
@@ -48,10 +50,23 @@ export default {
     commit(CURRENTPLAYINDEX,index)
   },
   // 切换上一首、下一首
-  changePlayMusic({commit,state},type){
+  changePlayMusic({commit,state},type='next'){
     let index = state.currentPlayIndex
-    index = state.playMode ===2?0:(type=='next'?(index < state.playingList.length?index+1:0):(index <= 0?state.playingList.length:index-1))
-    console.log(index);
+    index = state.playMode ===2?0:(type=='next'?(index < state.playingList.length?index+1:0):(index <= 0?state.playingList.length -1:index-1))
     commit(CURRENTPLAYINDEX,index)
   },
+  async _getSongUrl({commit},songid){
+    const result = await getSongUrl(songid)
+    console.log('歌曲详情');
+    console.log(result);
+
+    if(result.code ===0){
+      let vkey = result.req.data.vkey
+      let url =`http://111.202.85.154/amobile.music.tc.qq.com/C4000${songid}.m4a?guid=6170070579&vkey=${vkey}&uin=1040&fromtag=66`
+      console.log(url);
+    }
+  },
+
+
+
 }

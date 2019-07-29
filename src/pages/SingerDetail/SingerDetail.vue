@@ -114,13 +114,15 @@
         },
       },
       methods:{
-        ...mapActions(['openPlaying']),
+        ...mapActions(['openPlaying','_getSongUrl']),
         playAudio(item,index){
           // 获取到歌曲列表及当前idx
           this.openPlaying({
             lists:item,
             index:index
           })
+//          let id = item[index].mid
+//          this._getSongUrl(id)
         },
         _scrollStart(e){
           this.scrollY = e.y

@@ -5,10 +5,9 @@ export const RECEIVE_SINGER = 'receive_singer'
 export const RECEIVE_SINGERDETAIL = 'receive_singerDetail'
 export const PLAYSHOW = 'playShow'
 export const PLAYSTATUS = 'playStatus'
+export const PLAYFULLSHOW = 'playFullShow'
 export const PLAYINGLISTS = 'playingList'
 export const ORDERSONGSLIST = 'orderSongsList'
 export const RANDOMSONGSLIST = 'randomSongsList'
 export const PLAYMODE = 'playMode'
 export const CURRENTPLAYINDEX = 'currentPlayIndex'
-
-

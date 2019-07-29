@@ -6,6 +6,7 @@ import {
   RECEIVE_SINGERDETAIL,
   PLAYSHOW,
   PLAYSTATUS,
+  PLAYFULLSHOW,
   PLAYINGLISTS,
   ORDERSONGSLIST,
   RANDOMSONGSLIST,
@@ -57,8 +58,13 @@ export default {
   [PLAYSHOW](state,status){
     state.playShow = status
   },
+  // 播放器的全屏显示状态
+  [PLAYFULLSHOW](state,status){
+    state.playFullShow = status
+  },
   // 播放器的状态
   [PLAYSTATUS](state,status){
+    console.log(status);
     state.playStatus = status
   },
   // 添加播放列表
