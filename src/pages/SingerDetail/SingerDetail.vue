@@ -30,7 +30,7 @@
   import SongList from '../../components/SongList/SongList'
   import {getSingerDetail} from '../../api/index'
   import {createSong} from '../../assets/js/song'
-  import {mapActions} from 'vuex'
+  import {mapMutations,mapActions} from 'vuex'
   const FIXSCROLL =40;
   var originHeight=0
     export default {
@@ -115,8 +115,12 @@
       },
       methods:{
         ...mapActions(['openPlaying','_getSongUrl']),
+        ...mapMutations({
+          _saveOrigin:'orderSongsList'
+        }),
         playAudio(item,index){
           // 获取到歌曲列表及当前idx
+          this._saveOrigin(item)
           this.openPlaying({
             lists:item,
             index:index

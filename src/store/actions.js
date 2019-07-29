@@ -1,12 +1,14 @@
 /**
  * Created by qi.xu on 2019/7/23.
  */
+import {resetRandomList} from '../assets/js/song'
 // 二个值的问题。
 import {
   RECEIVE_SINGER,
   RECEIVE_SINGERDETAIL,
   PLAYSHOW,
   PLAYSTATUS,
+  PLAYMODE,
   PLAYINGLISTS,
   ORDERSONGSLIST,
   RANDOMSONGSLIST,
@@ -42,12 +44,25 @@ export default {
   // 开启播放模式
   openPlaying({commit,state},{lists,index}){
     // 更新播放列表  更新currentIndex 更新播放状态  播放器显示
-    let songid = lists[index].mid
+    commit(PLAYSTATUS,true)
     commit(PLAYSHOW,true)
-    //commit(PLAYSTATUS,true)
-    commit(ORDERSONGSLIST,lists)
-    //state.playMode===0?commit(ORDERSONGSLIST,lists):(state.playMode===1?commit(RANDOMSONGSLIST,lists):commit(RANDOMSONGSLIST,lists))
-    commit(CURRENTPLAYINDEX,index)
+    let list,idx
+    if(state.playMode===0){
+      list = lists
+      idx = index
+    }else if(state.playMode===1){
+      list = resetRandomList(lists)
+      console.log(list);
+      idx = list.findIndex((item)=>{
+         return item.id === lists[index].id
+      })
+    }else{
+      list = lists[index]
+      idx = 0
+    }
+    commit(PLAYINGLISTS,list)
+    commit(CURRENTPLAYINDEX,idx)
+
   },
   // 切换上一首、下一首
   changePlayMusic({commit,state},type='next'){
@@ -66,7 +81,20 @@ export default {
       console.log(url);
     }
   },
+  // 切换 mode
+  changePlayMode({commit,state},list){
+    let Mode = state.playMode
+    Mode = Mode<2?Mode+1:0
+    // 改变模式
+    commit(PLAYMODE,Mode)
+    // 改变播放列表
+    commit(PLAYINGLISTS,list)
+    // 设置当前的音乐不变
+    state.PLAYINGLISTS.findIndex((item,i)=>{
 
+    })
+
+  }
 
 
 }

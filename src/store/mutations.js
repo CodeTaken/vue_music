@@ -60,6 +60,7 @@ export default {
   },
   // 播放器的全屏显示状态
   [PLAYFULLSHOW](state,status){
+    console.log(status);
     state.playFullShow = status
   },
   // 播放器的状态
@@ -74,12 +75,10 @@ export default {
   // 顺序播放歌单
   [ORDERSONGSLIST](state,lists){
     state.orderSongsList = lists
-    state.playingList = state.orderSongsList
   },
   // 随机播放歌单
   [RANDOMSONGSLIST](state,lists){
     state.randomSongsList = lists
-    state.playingList = state.randomSongsList
   },
   // 播放模式
   [PLAYMODE](state,mode){
