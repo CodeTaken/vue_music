@@ -2,6 +2,7 @@
  * Created by qi.xu on 2019/7/23.
  */
 // 二个值的问题。
+import {} from '../assets/js/song'
 import {
   RECEIVE_SINGER,
   RECEIVE_SINGERDETAIL,
@@ -41,11 +42,21 @@ export default {
   },
   // 开启播放模式
   openPlaying({commit,state},{lists,index}){
-    // 更新播放列表  更新currentIndex 更新播放状态  播放器显示
-    let songid = lists[index].mid
+    // 打开播放窗口、设置播放、获取播放列表元数据、根据播放模式设置播放列表和当前song
+    let palyMode = state.playMode
+    let song =[].push(lists[index])
     commit(PLAYSHOW,true)
-    //commit(PLAYSTATUS,true)
+    commit(PLAYSTATUS,true)
     commit(ORDERSONGSLIST,lists)
+    if(palyMode===0){
+      commit(PLAYINGLISTS,lists)
+    }else if(palyMode===1){
+      // 随机列表
+
+    }else{
+      commit(PLAYINGLISTS,song)
+    }
+
     //state.playMode===0?commit(ORDERSONGSLIST,lists):(state.playMode===1?commit(RANDOMSONGSLIST,lists):commit(RANDOMSONGSLIST,lists))
     commit(CURRENTPLAYINDEX,index)
   },
