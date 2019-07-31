@@ -16,7 +16,7 @@ export const currentPlayIndex = state =>state.currentPlayIndex
 
 // 计算属性
 export const currentSong = (state)=>{
-  return state.orderSongsList[state.currentPlayIndex] || {}
+  return state.playingList[state.currentPlayIndex] || {}
 }
 
 

@@ -16,13 +16,15 @@
               <div class="progress">
                 <div class="flex progressContent">
                   <span class="curTime time">{{_format(currentTime)}}</span>
-                  <div class="progressBar"><mt-range :value="percentage" v-model="rangeValue" @touchend="middleTouchEnd" :bar-height="4">
-                  </mt-range></div>
+                  <div class="progressBar">
+                    <mt-progress :value="percentage" :bar-height="4"></mt-progress>
+                    <!--<mt-range disabled="" :value="percentage" v-model="rangeValue" @touchend="middleTouchEnd" :bar-height="4"></mt-range>-->
+                  </div>
                   <span class="totalTime time">{{_format(currentSong.duration)}}</span>
                 </div>
               </div>
               <div class="flex operators">
-                <div class="icon i-left">
+                <div class="icon i-left" @click="_modePlay">
                   <i class="icon-sequence"></i>
                 </div>
                 <div class="icon i-left" @click="_changePlayuMusic('prev')">
@@ -47,8 +49,8 @@
               <h3 class="songName">{{currentSong.name}}</h3>
               <p class="name">{{currentSong.singer}}</p>
             </div>
-            <div class="control">
-              <i class="icon-mini icon-pause-mini"></i>
+            <div class="control" @click="togglePlay">
+              <i :class="playStatus?'icon-pause':'icon-play'"></i>
             </div>
             <div class="control">
               <i class="icon-playlist"></i>
@@ -62,6 +64,7 @@
 
 <script>
     import {mapGetters,mapMutations,mapActions} from 'vuex'
+    import {resetRandomList} from '../../assets/js/song'
     export default {
       name: "SongPlay",
       data(){
@@ -73,64 +76,75 @@
           }
       },
       computed:{
-        ...mapGetters(['playStatus','currentSong','randomSongsList','currentPlayIndex','playFullShow']),
+        ...mapGetters(['playStatus','currentSong','randomSongsList','currentPlayIndex','playFullShow','playingList','playMode','orderSongsList']),
         percentage(){
           let {currentTime} = this
           return (currentTime/this.currentSong.duration)*100
         },
       },
       watch:{
-        currentSong(newSong,oldSong){
+        currentSong(newSong){
+          console.log('watch--currentSong');
          if(newSong.id){
              // url 改变了
            this.currentTime=0
            this.$nextTick(()=>{
-             if(this.playStatus) {
+             if(this.playStatus && this.audio.paused) {
+               //console.log('play');
                this.$refs.aduioEle.play()
              }
            })
          }
         },
         rangeValue(e){
-         // console.log(e);
-//          let seek = (e*this.currentSong.duration)/100
-//          console.log(seek);
-//          this.$refs.aduioEle.seekable.start(seek)
+         //console.log(e);
+         if(this.playStatus) audio.pause()
+         let seek = (e*this.currentSong.duration)/100
+          this.audio.seekable.start(seek)
+
+         audio.currentTime = seek;
+         if(this.playStatus) audio.play()
         }
       },
       created(){},
       mounted(){
-        console.log(this.currentSong);
-//        this.$nextTick(()=>{
-//          if(this.$refs.aduioEle){
-//
-//          }
-//        })
-        this.$refs.aduioEle.seeking(100)
+        this.audio = this.$refs.aduioEle
       },
       methods:{
+        _modePlay(){
+          // 随机播放  获取当前的播放列表和 index.
+          //let mode = this.playMode
+          //mode = mode <2? mode+1:0
+          this.$store.dispatch('changePlayMode')
+        },
+        _orderPlay(){
+          //console.log('0');
+          return this.orderSongsList
+        },
+        _singerPlay(){
+          //console.log('2');
+          return this.currentSong
+        },
         togglePlay(){
-          let {isPlaying} = this
-          this.isPlaying = !isPlaying
-          this._changePalyStatus(this.isPlaying)
-          if(!isPlaying){
-            this.$refs.aduioEle.play()
+          let status = !this.playStatus
+          this._changePalyStatus(status)
+          if(status){
+            this.audio.play()
           }else{
-            this.$refs.aduioEle.pause()
+            this.audio.pause()
           }
         },
         back(){
           // 改变播放的状态 小播发器 还是全屏
-          const status =!this.playStatus
+          const status =!this.playFullShow
           this._setPalyFull(status)
         },
         _changePlayuMusic(type){
-          console.log(this.isReady);
           this.$store.dispatch('changePlayMusic',type)
         },
         ...mapMutations({
           _setPalyFull:'playFullShow',
-          _changePalyStatus:'playStatus'
+          _changePalyStatus:'playStatus',
         }),
         _format(value){
           let s = parseInt(value/60)
@@ -140,10 +154,14 @@
         },
         _uploadTime(e){
           this.currentTime = e.target.currentTime
+          //console.log(e.target.currentTime);
         },
         _ready(e){
          //this.togglePlay()
           this.isReady = true
+          if(this.playStatus){
+            this.audio.play()
+          }
          // 判断此时应该需要播放的状态，来进行播放
         },
         _playEnd(){
@@ -153,8 +171,8 @@
           this.$store.dispatch('changePlayMusic',type)
         },
         middleTouchEnd(){
-            console.log('jkjkjk');
-            console.log(this.rangeValue);
+            //console.log('jkjkjk');
+            //console.log(this.rangeValue);
         }
       },
 

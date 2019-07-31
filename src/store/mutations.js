@@ -64,7 +64,6 @@ export default {
   },
   // 播放器的状态
   [PLAYSTATUS](state,status){
-    console.log(status);
     state.playStatus = status
   },
   // 添加播放列表
@@ -74,12 +73,10 @@ export default {
   // 顺序播放歌单
   [ORDERSONGSLIST](state,lists){
     state.orderSongsList = lists
-    state.playingList = state.orderSongsList
   },
   // 随机播放歌单
   [RANDOMSONGSLIST](state,lists){
     state.randomSongsList = lists
-    state.playingList = state.randomSongsList
   },
   // 播放模式
   [PLAYMODE](state,mode){

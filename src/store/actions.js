@@ -1,13 +1,14 @@
 /**
  * Created by qi.xu on 2019/7/23.
  */
+import {resetRandomList} from '../assets/js/song'
 // 二个值的问题。
-import {} from '../assets/js/song'
 import {
   RECEIVE_SINGER,
   RECEIVE_SINGERDETAIL,
   PLAYSHOW,
   PLAYSTATUS,
+  PLAYMODE,
   PLAYINGLISTS,
   ORDERSONGSLIST,
   RANDOMSONGSLIST,
@@ -27,7 +28,6 @@ export default {
     const result =await getSinger();
     if(result.code ===0){
       const singers = result.singerList.data.singerlist
-      //console.log(singers);
       commit(RECEIVE_SINGER,singers)
     }
   },
@@ -44,21 +44,27 @@ export default {
   openPlaying({commit,state},{lists,index}){
     // 打开播放窗口、设置播放、获取播放列表元数据、根据播放模式设置播放列表和当前song
     let palyMode = state.playMode
-    let song =[].push(lists[index])
+    let list,idx
+
     commit(PLAYSHOW,true)
     commit(PLAYSTATUS,true)
     commit(ORDERSONGSLIST,lists)
     if(palyMode===0){
-      commit(PLAYINGLISTS,lists)
+      list = lists
+      idx = index
     }else if(palyMode===1){
       // 随机列表
-
+       list = resetRandomList(lists)
+      idx = list.findIndex((item)=>{
+        return item.id === lists[index].id
+      })
     }else{
-      commit(PLAYINGLISTS,song)
+       list =[].push(lists[index])
+      idx = 0
     }
-
+    commit(PLAYINGLISTS,list)
     //state.playMode===0?commit(ORDERSONGSLIST,lists):(state.playMode===1?commit(RANDOMSONGSLIST,lists):commit(RANDOMSONGSLIST,lists))
-    commit(CURRENTPLAYINDEX,index)
+    commit(CURRENTPLAYINDEX,idx)
   },
   // 切换上一首、下一首
   changePlayMusic({commit,state},type='next'){
@@ -77,7 +83,39 @@ export default {
       console.log(url);
     }
   },
+  // 切换播放模式 mode
+  changePlayMode({commit,state},mode){
+    //切换当前的播放模式、根据源播放列表生成对应的播放列表、获取正在播放的song,重新设置 index
+    let Mode = state.playMode
+    let originArr = state.orderSongsList
+    let Song = state.playingList[state.currentPlayIndex]
+    let list=[],idx=-1
+    Mode = Mode<2?Mode+1:0
+    // 改变模式
+    commit(PLAYMODE,Mode)
+    // 改变播放列表
+    if(Mode===0){
+      list = originArr
+    }else if(Mode===1){
+      // 随机列表
+       list = resetRandomList(originArr)
+    }else{
+       list.push(Song)
+    }
+    commit(PLAYINGLISTS,list)
+    // 设置当前的音乐不变
+    list.some((item,i)=>{
+      if(item.id===Song.id){   // 随机生成的可能当前歌曲不在其中
+        console.log(item.mid + '<><>'+ Song.mid)
+        idx = i
+        return i
+      }
+    })
+    console.log(list);
+    console.log(idx);
+    commit(CURRENTPLAYINDEX,idx)
 
+  }
 
 
 }
