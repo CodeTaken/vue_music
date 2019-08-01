@@ -89,3 +89,17 @@ export function getSongUrl(songId){
 
   return jsonp(url,data)
 }
+
+
+// 获取榜单数据
+export function getRankingList(){
+  let url ='/myi/cgi-bin/musicu.fcg?_=1564643682522'
+  //let data = {"req_0":{"module":"musicToplist.ToplistInfoServer","method":"GetAll","param":{}},"comm":{"g_tk":1876302321,"uin":930407440,"format":"json","ct":23,"cv":0}}
+  return axios.post(url, {
+     "req_0":{"module":"musicToplist.ToplistInfoServer","method":"GetAll","param":{}},
+      "comm":{"g_tk":1876302321,"uin":930407440,"format":"json","ct":23,"cv":0}
+
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

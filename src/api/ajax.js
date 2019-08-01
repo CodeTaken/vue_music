@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 export default function ajax (url, data={}, type='GET') {
-  console.log('jlll')
   return new Promise(function (resolve, reject) {
     // 执行异步ajax请求
     let promise

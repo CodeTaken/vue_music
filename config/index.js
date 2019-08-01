@@ -22,6 +22,18 @@ module.exports = {
         headers:{
           referer:'https://c.y.qq.com',
         }
+      },
+      '/myi': { // 匹配所有以 '/api'开头的请求路径
+        target: 'https://u.y.qq.com/',       //'https://y.qq.com', // 代理目标的基础路径
+        changeOrigin: true, // 支持跨域
+        secure:false,  // 如果是 https 接口，需要配置这个参数
+        //host:'y.qq.com',
+        pathRewrite: {// 重写路径: 去掉路径中开头的'/api'
+          '^/myi': ''
+        },
+        headers:{
+          referer:'https://m.y.qq.com',
+        }
       }
     },
 

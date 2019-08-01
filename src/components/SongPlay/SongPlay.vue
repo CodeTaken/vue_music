@@ -140,6 +140,9 @@
           this._setPalyFull(status)
         },
         _changePlayuMusic(type){
+          if(this.playMode ===2){
+            this.audio.loop()
+          }
           this.$store.dispatch('changePlayMusic',type)
         },
         ...mapMutations({
@@ -168,6 +171,11 @@
             // 播放结束之后应该切换到下一首
           this.isPlaying = false
           this.isReady = false
+          let type='next'
+          if(this.playMode ===2){
+            this.audio.currentTime = 0
+            this.audio.play()
+          }
           this.$store.dispatch('changePlayMusic',type)
         },
         middleTouchEnd(){

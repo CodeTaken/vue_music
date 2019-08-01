@@ -7,7 +7,7 @@
       <div class="singerHeader" ref="singerHeader">
          <img class="ImgAuto" :src="bgImage" alt="" ref="">
          <div class="play-wrapper">
-          <div ref="playBtn" v-show="songs.length>0" class="play" @click="_random">
+          <div ref="playBtn" v-show="songs.length>0" class="play" @click="_random(songs,0,1)">
             <i class="icon-play"></i>
             <span class="text">随机播放全部</span>
           </div>
@@ -128,8 +128,13 @@
         _scrollStart(e){
           this.scrollY = e.y
         },
-        _random(){
-            //console.log('random');
+        _random(item,index,mode){
+
+          this.openPlaying({
+            lists:item,
+            index:index,
+            mode:mode
+          })
         },
         _getSingerDetail(){
           const id= this.$route.query.id

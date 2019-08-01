@@ -21,6 +21,11 @@ import {
   getSongUrl,
 } from '../api/index'
 
+function setPlayList(){
+
+}
+
+
 export default {
 
   //获取歌手名单
@@ -41,35 +46,40 @@ export default {
     }
   },
   // 开启播放模式
-  openPlaying({commit,state},{lists,index}){
+  openPlaying({commit,state},{lists,index,mode}){
     // 打开播放窗口、设置播放、获取播放列表元数据、根据播放模式设置播放列表和当前song
-    let palyMode = state.playMode
-    let list,idx
-
+    let Mode = mode?mode:state.playMode
+    let Song = lists[index]
+    let list=[],idx=-1
+    commit(PLAYMODE,Mode)
     commit(PLAYSHOW,true)
     commit(PLAYSTATUS,true)
     commit(ORDERSONGSLIST,lists)
-    if(palyMode===0){
-      list = lists
-      idx = index
-    }else if(palyMode===1){
+    if(Mode===0){
+      list = state.orderSongsList
+    }else if(Mode===1){
       // 随机列表
-       list = resetRandomList(lists)
-      idx = list.findIndex((item)=>{
-        return item.id === lists[index].id
-      })
+      list = resetRandomList(state.orderSongsList)
     }else{
-       list =[].push(lists[index])
-      idx = 0
+      list.push(Song)
     }
     commit(PLAYINGLISTS,list)
-    //state.playMode===0?commit(ORDERSONGSLIST,lists):(state.playMode===1?commit(RANDOMSONGSLIST,lists):commit(RANDOMSONGSLIST,lists))
+    // 设置当前的音乐不变
+    list.some((item,i)=>{
+      if(item.id===Song.id){   // 随机生成的可能当前歌曲不在其中
+        console.log(item.mid + '<><>'+ Song.mid)
+        idx = i
+        return i
+      }
+    })
+    console.log(list);
     commit(CURRENTPLAYINDEX,idx)
   },
   // 切换上一首、下一首
   changePlayMusic({commit,state},type='next'){
     let index = state.currentPlayIndex
     index = state.playMode ===2?0:(type=='next'?(index < state.playingList.length?index+1:0):(index <= 0?state.playingList.length -1:index-1))
+    console.log('切换到下一首');
     commit(CURRENTPLAYINDEX,index)
   },
   async _getSongUrl({commit},songid){
@@ -111,8 +121,6 @@ export default {
         return i
       }
     })
-    console.log(list);
-    console.log(idx);
     commit(CURRENTPLAYINDEX,idx)
 
   }

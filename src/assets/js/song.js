@@ -21,7 +21,7 @@ export function createSong(list){
     album:list.album.title,
     duration :list.interval,
     image :`https://y.gtimg.cn/music/photo_new/T002R300x300M000${list.album.mid}.jpg?max_age=2592000`,
-    url :`http://111.202.98.160/amobile.music.tc.qq.com/C400004dFFPd4JNv8q.m4a?guid=6170070579&vkey=FA0535E21A7BDEE914F98BFBF9E73D42F30E16F3A6CEEBA5D6F1EE934872B61ECC9654D0E1B37925342349BDD7A5737381D67B986B9A3D29&uin=1040&fromtag=66&cid=${list.mid}`
+    url :`http://111.202.85.154/amobile.music.tc.qq.com/C400004dFFPd4JNv8q.m4a?guid=6170070579&vkey=C5BC1F64789702300D97475A3EFF688D2A9ADDAE7B51089B03BA03587232860FEE4454813F2EE647BF294962AF69425F291238129BD33B83&uin=1040&fromtag=66&cid=${list.mid}`
   })
 }
 
