@@ -31,10 +31,8 @@
       name: "Rank",
       created(){
         getRankingList().then((res)=>{
-          let result = res.req_0.data.group;
           let arr = []
-          console.log(result)
-          result.forEach((item)=>{
+          res.req_0.data.group.forEach((item)=>{
             arr.push(...item.toplist)
           })
           this.rankLists = arr
@@ -47,11 +45,14 @@
   @import "../../assets/stylus/variable.styl";
 .page
   padding:20px
-  position: relative;
+  position: fixed;
+  top: 82px;
+  width: 100%;
+  bottom: 0;
   .bscroll
-    position: absolution;
-    top: 82px;
-    width: 100%;
+    position: absolute;
+    top: 0;
+    /*width: 100%;*/
     bottom: 0;
     overflow: hidden;
     .rankList
